@@ -5,16 +5,24 @@ Plug 'preservim/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'jiangmiao/auto-pairs'
-Plug 'ryanoasis/vim-devicons'
+Plug 'ryanoasis/vim-devicons' " Needs to be loaded last
 call plug#end()
 
-" --- APPEARANCE ---
+" --- THEME & UI ---
 syntax on
+colorscheme dracula
+let g:airline_theme='dracula'
+let g:airline_powerline_fonts = 1
+
+" --- SETTINGS ---
 set number
 set relativenumber
-set termguicolors
-colorscheme dracula
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set encoding=UTF-8
 
-" --- KEYBINDINGS ---
-let mapleader = " "
-map <C-n> :NERDTreeToggle<CR>
+" --- CUSTOM KEYBINDINGS ---
+" Toggle NERDTree with Ctrl+n
+nnoremap <C-n> :NERDTreeToggle<CR>
