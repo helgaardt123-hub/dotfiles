@@ -1,0 +1,115 @@
+# --- i3 CONFIGURATION ---
+# Target: /mnt/storage/dotfiles/i3/config
+# Symlinked to: ~/.config/i3/config
+
+# Set the Mod key (Mod4 is the Windows/Super key)
+set $mod Mod4
+
+# Font for window titles and bar
+font pango:System San Francisco Display 10, FontAwesome 10
+
+# --- DRACULA COLOR PALETTE ---
+set $bg      #282a36
+set $fg      #f8f8f2
+set $sel     #44475a
+set $cmt     #6272a4
+set $cyan    #8be9fd
+set $green   #50fa7b
+set $orange  #ffb86c
+set $pink    #ff79c6
+set $purple  #bd93f9
+set $red     #ff5555
+set $yellow  #f1fa8c
+
+# --- WINDOW COLORS ---
+# class                 border  backgr. text    indicator child_border
+client.focused          $purple $purple $fg     $pink     $purple
+client.focused_inactive $sel    $bg     $fg     $sel      $sel
+client.unfocused        $bg     $bg     $cmt    $bg       $bg
+client.urgent           $red    $red    $fg     $red      $red
+client.placeholder      $bg     $bg     $fg     $bg       $bg
+
+# --- AUTOSTART ---
+exec --no-startup-id nm-applet
+exec --no-startup-id xsetroot -solid "#282a36"
+# exec --no-startup-id feh --bg-fill /path/to/your/wallpaper.png
+
+# Launch the compositor for transparency
+exec --no-startup-id picom -b
+
+# Ensure i3status uses our specific config
+bar {
+    status_command i3status -c ~/.i3status.conf
+    # ... rest of your bar config ...
+}
+
+# --- KEYBINDINGS ---
+
+# Core Tools
+bindsym $mod+Return exec terminator
+bindsym $mod+Shift+q kill
+bindsym $mod+d exec dmenu_run -nb "$bg" -nf "$fg" -sb "$purple" -sf "$bg"
+bindsym $mod+Shift+x exec i3lock -c 282a36
+
+# Vim-style focus navigation
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+# Vim-style window movement
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+# Layout Management
+bindsym $mod+h split h
+bindsym $mod+v split v
+bindsym $mod+f fullscreen toggle
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+
+# Workspace Navigation
+set $ws1 "1: "
+set $ws2 "2: "
+set $ws3 "3: "
+set $ws4 "4: "
+set $ws5 "5: "
+
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+
+# --- SYSTEM CONTROL ---
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3?' -B 'Yes' 'i3-msg exit'"
+
+# --- THE BAR ---
+bar {
+    status_command i3status
+    position top
+    colors {
+        background $bg
+        statusline $fg
+        separator  $sel
+
+        #                  border  backgr. text
+        focused_workspace  $purple $purple $fg
+        active_workspace   $sel    $sel    $fg
+        inactive_workspace $bg     $bg     $cmt
+        urgent_workspace   $red    $red    $fg
+    }
+}
