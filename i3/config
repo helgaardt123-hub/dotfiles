@@ -31,7 +31,7 @@ client.placeholder      $bg     $bg     $fg     $bg       $bg
 
 # --- AUTOSTART ---
 exec --no-startup-id nm-applet
-exec --no-startup-id xsetroot -solid "#282a36"
+exec --no-startup-id feh --bg-fill /mnt/storage/dotfiles/assets/dracula-kde.png
 # exec --no-startup-id feh --bg-fill /path/to/your/wallpaper.png
 
 # Launch the compositor for transparency
