@@ -1,0 +1,157 @@
+# --- i3 CONFIGURATION ---
+# Path: /mnt/storage/dotfiles/i3/config
+# Symlinked to: ~/.config/i3/config
+
+# Set the Mod key to Super (Windows Key)
+set $mod Mod4
+
+# Font for window titles and bar (Requires fonts-font-awesome)
+# Update line 8 (or wherever your font line is)
+font pango:Hack Nerd Font 12, FontAwesome 12
+
+
+
+# --- DRACULA COLOR PALETTE ---
+set $bg      #282a36
+set $fg      #f8f8f2
+set $sel     #44475a
+set $cmt     #6272a4
+set $cyan    #8be9fd
+set $green   #50fa7b
+set $orange  #ffb86c
+set $pink    #ff79c6
+set $purple  #bd93f9
+set $red     #ff5555
+set $yellow  #f1fa8c
+
+# --- WINDOW COLORS ---
+# class                 border  backgr. text    indicator child_border
+client.focused          $purple $purple $fg     $pink     $purple
+client.focused_inactive $sel    $bg     $fg     $sel      $sel
+client.unfocused        $bg     $bg     $cmt    $bg       $bg
+client.urgent           $red    $red    $fg     $red      $red
+client.placeholder      $bg     $bg     $fg     $bg       $bg
+
+# --- AUTOSTART ---
+# 1. Launch the compositor for transparency
+exec --no-startup-id picom -b
+
+# 2. Set the official Dracula wallpaper from your LVM
+exec_always --no-startup-id feh --bg-fill ~/i3-backup/assets/dracula-kde.png
+
+# 3. System Tray Apps
+exec --no-startup-id nm-applet
+
+# $. Bluetooth Tool
+
+exec --no-startup-id blueman-applet
+
+# --- KEYBINDINGS ---
+
+# Core Tools
+bindsym $mod+Return exec terminator
+bindsym $mod+Shift+q kill
+# --- LAUNCHER (dmenu) ---
+# Dracula-themed dmenu
+# bindsym $mod+d exec dmenu_run -nb "#282a36" -nf "#f8f8f2" -sb "#bd93f9" -sf "#282a36" -fn "Hack-12"
+# bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec rofi -show drun -show-icons
+# Add a bonus bind to use Rofi to switch between open windows
+bindsym $mod+Tab exec rofi -show window
+bindsym $mod+Shift+x exec i3lock -c 282a36
+
+# Vim-style focus navigation
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+# Vim-style window movement
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+# Layout Management
+bindsym $mod+h split h
+bindsym $mod+v split v
+bindsym $mod+f fullscreen toggle
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+
+# Workspace Navigation (Icons require FontAwesome)
+set $ws1 "1:"
+set $ws2 "2:"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+
+# System Control
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+
+# Gaps configuration
+gaps inner 10
+gaps outer 5
+smart_gaps on
+
+# Remove window title bars
+for_window [class="^.*"] border pixel 2
+
+# --- THE BAR (Bottom) ---
+bar {
+    tray_output none
+    status_command i3status -c ~/.i3status.conf
+    position bottom
+    
+    # Use your Nerd Hacker Font here
+    font pango:Font Awesome 6 Free 10, Hack Nerd Font 10
+    
+    colors {
+        background #282a36
+        statusline #f8f8f2
+        separator  #6272a4
+        focused_workspace  #bd93f9 #bd93f9 #282a36
+        active_workspace   #44475a #44475a #f8f8f2
+        inactive_workspace #282a36 #282a36 #6272a4
+        urgent_workspace   #ff5555 #ff5555 #f8f8f2
+    }
+}
+
+# Modern floating look
+smart_gaps on
+gaps inner 8
+gaps outer 0
+for_window [class="^.*"] border pixel 2
+
+# Dracula Window Colors (class | border | background | text | indicator | child_border)
+client.focused          #bd93f9 #bd93f9 #f8f8f2 #ff79c6   #bd93f9
+client.focused_inactive #44475a #44475a #f8f8f2 #44475a   #44475a
+client.unfocused        #282a36 #282a36 #bfbfbf #282a36   #282a36
+
+# Document compilation shortcut
+bindsym $mod+c exec terminator -e "pandoc resume.md -o resume.pdf --pdf-engine=pdflatex"
+
+# 1. Automatically launch the scratchpad hidden in the background on boot
+exec --no-startup-id terminator -T "scratchpad"
+
+# 2. Force the window named "scratchpad" to float and set its size
+for_window [title="scratchpad"] floating enable, resize set 1200 800, move scratchpad
+
+# 3. Toggle the drop-down scratchpad with Mod + Shift + Enter
+bindsym $mod+Shift+Return scratchpad show
